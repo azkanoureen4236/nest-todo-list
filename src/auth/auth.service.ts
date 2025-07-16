@@ -1,38 +1,43 @@
 import { HttpException, Injectable } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import { ExtractJwt, Strategy } from 'passport-jwt';
-import { PassportStrategy } from '@nestjs/passport';
+//import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/user/user.service';
 import * as jwt from 'jsonwebtoken';
 import * as dotenv from 'dotenv';
+import { SignupDto } from './dto/user-signup.dto';
+import { LoginDto } from './dto/login.dto';
 dotenv.config();
 @Injectable()
 export class AuthService {
+  createTodo(body: any) {
+      throw new Error("Method not implemented.");
+  }
   constructor(
     private readonly userService: UserService,
-    private readonly jwtService: JwtService,
+    //private readonly jwtService: JwtService,
   ) {}
 
-  async signup(signupDto: any): Promise<any> {
+  async signup(signupDto: SignupDto): Promise<any> {
     const userRegistered = this.userService.createUser(signupDto);
     return userRegistered;
   }
 
-  async authenticateuser(
-    email: string,
-    password: string,
+  async login(
+    user: any,
   ): Promise<{ token: string }> {
-    const authenticateuser = await this.userService.findUserByEmail(email);
-    if (!authenticateuser) {
+    // remove authentication logic, just keep the token generation
+    const login = await this.userService.findUserByEmail(user.email);
+    if (!user) {
       throw new HttpException('User not found', 404);
     }
-    if (authenticateuser.password !== password) {
+    if (user.password !== user.password) {
       throw new HttpException('Invalid password', 401);
     }
     const payload = {
-      userId: authenticateuser.id,
-      email: authenticateuser.email,
-      name: authenticateuser.name,
+      userId: user.id,
+      email: user.email,
+      password:  user.password,
+
+      
     };
 
     // Generate JWT token
