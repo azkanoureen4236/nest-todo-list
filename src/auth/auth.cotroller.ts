@@ -10,9 +10,9 @@ import {
   HttpException,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { SignupDto } from './dto/user-signup.dto';
 import { LoginDto } from './dto/login.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { SignupDto } from './dto/signup.dto';
 //import { UserService } from 'src/user/user.service';
 
 @Controller('auth')
@@ -33,7 +33,7 @@ export class AuthController {
   // implement authentication guard that uses local strategy
   @UseGuards(AuthGuard('local'))
   @Post('login')
-  async login(@Req() req,@Body() loginDto: LoginDto) {
+  async login(@Req() req, @Body() loginDto: LoginDto) {
     if (!loginDto || !loginDto.email || !loginDto.password) {
       throw new HttpException(
         'Email and password are required',
