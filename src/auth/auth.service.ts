@@ -3,11 +3,9 @@ import {
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
-//import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/user/user.service';
 import * as jwt from 'jsonwebtoken';
 import * as dotenv from 'dotenv';
-import { LoginDto } from './dto/login.dto';
 import { SignupDto } from './dto/signup.dto';
 dotenv.config();
 @Injectable()
@@ -17,7 +15,7 @@ export class AuthService {
   }
   constructor(
     private readonly userService: UserService,
-    //private readonly jwtService: JwtService,
+    
   ) {}
 
   async signup(signupDto: SignupDto): Promise<any> {
@@ -26,7 +24,7 @@ export class AuthService {
   }
 
   async login(user: any): Promise<{ token: string }> {
-    // add try catch block for all te functions in service files
+    
     try {
       const userdb = await this.userService.findUserByEmail(user.email);
       if (!user) {
@@ -41,7 +39,7 @@ export class AuthService {
         password: user.password,
       };
 
-      // Generate JWT token
+     
       const token = jwt.sign({ ...payload }, process.env.JWT_SECRET || '', {
         expiresIn: process.env.JWT_EXPIRES_IN,
       });

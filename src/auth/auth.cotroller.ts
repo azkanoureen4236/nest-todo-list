@@ -13,7 +13,7 @@ import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { SignupDto } from './dto/signup.dto';
-//import { UserService } from 'src/user/user.service';
+import * as bcrypt from 'bcryptjs';
 
 @Controller('auth')
 export class AuthController {
@@ -28,9 +28,11 @@ export class AuthController {
       );
     }
     return await this.authService.signup(signupDto);
+
+
   }
 
-  // implement authentication guard that uses local strategy
+  
   @UseGuards(AuthGuard('local'))
   @Post('login')
   async login(@Req() req, @Body() loginDto: LoginDto) {
@@ -40,7 +42,7 @@ export class AuthController {
         HttpStatus.BAD_REQUEST,
       );
     }
-    //access user from request object and pass it to the service
+    
     if (!req.user) {
       throw new HttpException('User not found', HttpStatus.UNAUTHORIZED);
     }

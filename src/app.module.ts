@@ -14,7 +14,6 @@ dotenv.config();
     AuthModule,
     PrismaModule,
     TodoModule,
-    // Load environment variables from .env file
     ConfigModule.forRoot({
       isGlobal: true,
     }),

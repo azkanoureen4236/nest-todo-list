@@ -2,6 +2,8 @@ import { HttpException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'prisma/prisma.service';
 import { UserDto } from './dto/user.dto';
 import { SignupDto } from 'src/auth/dto/signup.dto';
+import * as bcrypt from 'bcryptjs';
+import { LoginDto } from 'src/auth/dto/login.dto';
 
 @Injectable()
 export class UserService {
@@ -9,10 +11,11 @@ export class UserService {
 
   async createUser(signupDto: SignupDto): Promise<any> {
     try {
+      const hashedPassword = await bcrypt.hash(signupDto.password, 10);
       const user = await this.prisma.user.create({
         data: {
           email: signupDto.email,
-          password: signupDto.password,
+          password: hashedPassword,
           name: signupDto.name,
         },
       });
@@ -68,4 +71,20 @@ export class UserService {
       throw new HttpException('Failed to update user', 500);
     }
   }
+  async validateUserCredentials(loginDto: LoginDto): Promise<any> {
+    const user = await this.findUserByEmail(loginDto.email);
+    if (!user) {
+      throw new HttpException('Invalid credentials', 401);
+    }
+
+    const isPasswordMatch = await bcrypt.compare(loginDto.password, user.password);
+    if (!isPasswordMatch) {
+      throw new HttpException('Invalid credentials', 401);
+    }
+
+    const { password, ...userWithoutPassword } = user;
+    return userWithoutPassword;
+  }
 }
+
+
