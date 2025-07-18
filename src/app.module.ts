@@ -5,6 +5,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { TodoModule } from './todo/todo.module';
 import { PrismaModule } from '../prisma/prisma.module';
 import { ConfigModule } from '@nestjs/config';
+import { TaskScheduler } from './schedulers/task-scheduler';
 import { ScheduleModule } from '@nestjs/schedule';
 import * as dotenv from 'dotenv';
 dotenv.config();
@@ -20,6 +21,6 @@ dotenv.config();
       isGlobal: true,
     }),
   ],
-  providers: [PrismaService],
+  providers: [PrismaService,TaskScheduler],
 })
 export class AppModule {}
