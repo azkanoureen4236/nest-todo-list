@@ -13,7 +13,7 @@ import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { SignupDto } from './dto/signup.dto';
-import * as bcrypt from 'bcryptjs';
+
 
 @Controller('auth')
 export class AuthController {

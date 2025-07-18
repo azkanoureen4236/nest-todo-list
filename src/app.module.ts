@@ -5,6 +5,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { TodoModule } from './todo/todo.module';
 import { PrismaModule } from '../prisma/prisma.module';
 import { ConfigModule } from '@nestjs/config';
+import { ScheduleModule } from '@nestjs/schedule';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
@@ -14,6 +15,7 @@ dotenv.config();
     AuthModule,
     PrismaModule,
     TodoModule,
+    ScheduleModule.forRoot(),
     ConfigModule.forRoot({
       isGlobal: true,
     }),

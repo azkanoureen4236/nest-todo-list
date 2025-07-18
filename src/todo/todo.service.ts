@@ -2,10 +2,13 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { PrismaService } from 'prisma/prisma.service';
 import { Todo } from '@prisma/client';
 import { TodoDto } from './dto/todo.dto';
+import { CronExpression, SchedulerRegistry } from '@nestjs/schedule';
 
 @Injectable()
 export class TodoService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService,
+              private readonly schedulerRegistry: SchedulerRegistry
+  ) {}
 
   async createTodo(data: {
     title: string;
@@ -33,7 +36,7 @@ export class TodoService {
     }
   }
 
-  async updateTodo(
+async updateTodo(
     todoId: number,
     userId: number,
     data: Partial<TodoDto>,
@@ -69,3 +72,5 @@ export class TodoService {
 
 }
 }
+
+
